@@ -1,3 +1,4 @@
+require('dotenv').config()
 const planos = deps => {
   return {
     all: () => {

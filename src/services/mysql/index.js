@@ -1,5 +1,6 @@
+require('dotenv').config()
 const mysqlServer = require('mysql')
-// PARA FUNCIONAR O .ENV PRECISA INSTALAR A BIBLIOTECA 
+// PARA FUNCIONAR O .ENV PRECISA INSTALAR A BIBLIOTECA
 // npm i --save-dev dotenv
 // https://github.com/motdotla/dotenv
 // aula 14
@@ -10,8 +11,10 @@ const connection = mysqlServer.createConnection({
   password: process.env.MYSQL_PASSWORD,
   port: process.env.MYSQL_PORTA,
   database: process.env.MYSQL_DATABASE
-  
+
 })
+
+//console.log(connection)
 
 const errorHandler = (error, msg, rejectFunction) => {
   console.error(error)
@@ -26,9 +29,18 @@ const planosModule = require('./plano')({
   errorHandler
 })
 
-// const AlunosModule = require('./aluno', errorHandler)({  connection })
+const usersModule = require('./users', errorHandler)({
+  connection,
+  errorHandler
+})
+
+const authModule = require('./auth', errorHandler)({
+  connection,
+  errorHandler
+})
 
 module.exports = {
-  planos: () => planosModule
-  // alunos: () => AlunosModule
+  planos: () => planosModule,
+  users: () => usersModule,
+  auth: () => authModule
 }
